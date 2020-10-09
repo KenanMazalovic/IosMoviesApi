@@ -42,6 +42,7 @@ class MoviesViewController: UITableViewController {
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var isSuggestions: Bool = false
     var list = [Suggestions]()
+  
     
     var listOfMovies = [MovieDetail]() {
         didSet {
@@ -65,6 +66,7 @@ class MoviesViewController: UITableViewController {
         searchBar.delegate = self
         tableView.register(SuggestionsCell.self, forCellReuseIdentifier: SuggestionsCell.id)
         loadSuggestion()
+        
         
         
     }
@@ -152,7 +154,7 @@ class MoviesViewController: UITableViewController {
     
     
     func searchMovie(search:String) {
-        let newSuggestion = Suggestions(context: self.context)
+        
         var movieRequest = MovieRequest(movieName: search,page: self.page)
         self.isSuggestions=false
         movieRequest.getMovies { [weak self] result in
@@ -162,9 +164,11 @@ class MoviesViewController: UITableViewController {
                     self!.isAlert = true
                     self?.listOfMovies.removeAll()
                     self?.tableView.reloadData()
+                    self?.isSuggestions = true 
                 }
                 print(error)
             case .success(let movies):
+                let newSuggestion = Suggestions(context: self!.context)
                 newSuggestion.name = search
                 self?.saveSuggestion()
                 self?.listOfMovies.append(contentsOf: movies)
@@ -188,8 +192,6 @@ class MoviesViewController: UITableViewController {
     
     func loadSuggestion() {
         let request : NSFetchRequest<Suggestions> = Suggestions.fetchRequest()
-        //        request.returnsDistinctResults = true
-        //        request.resultType = NSFetchRequestResultType.dictionaryResultType
         let SortDescriptor = NSSortDescriptor(key: "_pk", ascending: false)
         request.sortDescriptors = [SortDescriptor]
         do{
@@ -197,7 +199,9 @@ class MoviesViewController: UITableViewController {
             list = try context.fetch(request)
             var i = 0
             while i < list.count{
-                array.append(list[i].name!)
+                if(list[i].name != nil){
+                    array.append(list[i].name!)
+                }
                 i+=1
             }
             if(array.count > 10){
