@@ -2,11 +2,20 @@
 //  SceneDelegate.swift
 //  MoviesApi
 //
-//  Created by Kenan Mazalovic on 10/9/20.
+//  Created by Kenan Mazalovic on 10/1/20.
 //
 
 import UIKit
 
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
